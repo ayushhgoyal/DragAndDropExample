@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -88,8 +89,8 @@ public class DragActivity extends Activity {
 
 		@Override
 		public boolean onDrag(View v, DragEvent event) {
-			Log.e("DRAGGGG",
-					upperLayout.toString() + " + " + lowerLayout.toString());
+			// Log.e("DRAGGGG",
+			// upperLayout.toString() + " + " + lowerLayout.toString());
 			int action = event.getAction();
 			switch (event.getAction()) {
 			case DragEvent.ACTION_DRAG_STARTED:
@@ -109,31 +110,39 @@ public class DragActivity extends Activity {
 			case DragEvent.ACTION_DROP:
 				// Dropped, reassign View to ViewGroup
 				View view = (View) event.getLocalState();
-
+				Log.e("VIEWW 1",
+						v.toString()
+								+ " ID "
+								+ view.getParent().toString().trim()
+										.equals(v.toString().trim()));
 				ViewGroup owner = (ViewGroup) view.getParent();
-				owner.removeView(view);
-				LinearLayout container = (LinearLayout) v;
-				container.addView(view);
-				view.setVisibility(View.VISIBLE);
-				Log.e("drag", "drag drop");
-				numberOfViews++;
 
-				TextView view3 = (TextView) event.getLocalState();
-				view3.setEnabled(false);
-
-				String s = view3.getText().toString().trim();
-				Log.e("TEXT", view3.getText().toString().trim());
-				str.append(s);
-				if (numberOfViews == 3) {
-					if (str.toString().equals(correctAns)) {
-						Toast.makeText(getApplicationContext(), "Correct",
-								Toast.LENGTH_SHORT).show();
-					} else {
-						Toast.makeText(getApplicationContext(), "Wrong",
-								Toast.LENGTH_SHORT).show();
+				if (!view.getParent().toString().trim()
+						.equals(v.toString().trim())) {
+					owner.removeView(view);
+					LinearLayout container = (LinearLayout) v;
+					container.addView(view);
+					view.setVisibility(View.VISIBLE);
+					Log.e("drag", "drag drop");
+					numberOfViews++;
+					TextView view3 = (TextView) event.getLocalState();
+					view3.setEnabled(false);
+					String s = view3.getText().toString().trim();
+					Log.e("TEXT", view3.getText().toString().trim());
+					str.append(s);
+					if (numberOfViews == 3) {
+						if (str.toString().equals(correctAns)) {
+							Toast.makeText(getApplicationContext(), "Correct",
+									Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(), "Wrong",
+									Toast.LENGTH_SHORT).show();
+						}
 					}
+				} else {// dropped in same view
+					View view2 = (View) event.getLocalState();
+					view2.setVisibility(View.VISIBLE);
 				}
-
 				break;
 			case DragEvent.ACTION_DRAG_ENDED:
 				v.setBackgroundDrawable(normalShape);
