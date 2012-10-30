@@ -27,8 +27,9 @@
 			android:id="@+id/textView1"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:padding="3dp"
-			android:text="Ayush"
+			android:background="@drawable/border"
+			android:padding="5dp"
+			android:text="one"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:textColor="#ffffff" />
 
@@ -36,8 +37,19 @@
 			android:id="@+id/textView2"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:padding="3dp"
-			android:text="Goyal"
+			android:background="@drawable/border"
+			android:padding="5dp"
+			android:text="two"
+			android:textAppearance="?android:attr/textAppearanceLarge"
+			android:textColor="#ffffff" />
+
+		<TextView
+			android:id="@+id/textView3"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/border"
+			android:padding="5dp"
+			android:text="three"
 			android:textAppearance="?android:attr/textAppearanceLarge"
 			android:textColor="#ffffff" />
 	</LinearLayout>
@@ -45,7 +57,7 @@
 	<LinearLayout
 		android:id="@+id/topright"
 		android:layout_width="match_parent"
-		android:layout_height="200dp"
+		android:layout_height="112dp"
 		android:background="@drawable/shape" >
 
 		<TextView
@@ -108,5 +120,11 @@
 	<!-- android:layout_row="0" -->
 	<!-- android:src="@drawable/ic_launcher" /> -->
 	<!-- </LinearLayout> -->
+
+	<Button
+		android:id="@+id/button1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Restart" />
 
 </LinearLayout>
