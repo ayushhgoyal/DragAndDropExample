@@ -1,5 +1,8 @@
 package com.click4tab.draganddrop;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
@@ -26,10 +29,21 @@ public class DragActivity extends Activity {
 	String correctAns = "onetwothree";
 	LinearLayout upperLayout;
 	LinearLayout lowerLayout;
+	
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		overridePendingTransition(R.anim.zoon_enter, R.anim.zoom_exit);
+
+		super.onPause();
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		overridePendingTransition(R.anim.zoon_enter, R.anim.zoom_exit);
+
 		setContentView(R.layout.activity_drag);
 		findViewById(R.id.textView1).setOnTouchListener(new MyTouchListener());
 		findViewById(R.id.textView2).setOnTouchListener(new MyTouchListener());
@@ -47,6 +61,20 @@ public class DragActivity extends Activity {
 		// MyDragListener());
 		// findViewById(R.id.bottomright).setOnDragListener(new
 		// MyDragListener());
+
+		// ---------
+
+		// snippet to jumble the arraylist.
+		ArrayList<String> x = new ArrayList<String>();
+		x.add("one");
+		x.add("two");
+		x.add("three");
+		x.add("four");
+		Log.e("before JUMBLE", x.toString());
+		Collections.shuffle(x);
+		Log.e("after JUMBLE", x.toString());
+
+		// ------
 		str = new StringBuilder();
 		Button restart = (Button) findViewById(R.id.button1);
 		restart.setOnClickListener(new OnClickListener() {
