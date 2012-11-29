@@ -6,10 +6,12 @@ import java.util.Collections;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnDragListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,10 +29,10 @@ import android.widget.Toast;
 public class DragActivity extends Activity {
 	int numberOfViews = 0;
 	StringBuilder str;
-	String correctAns = "onetwothree";
+	String correctAns = "";
 	LinearLayout upperLayout;
 	LinearLayout lowerLayout;
-	
+	ArrayList<String> x;
 
 	@Override
 	protected void onPause() {
@@ -45,9 +48,13 @@ public class DragActivity extends Activity {
 		overridePendingTransition(R.anim.zoon_enter, R.anim.zoom_exit);
 
 		setContentView(R.layout.activity_drag);
-		findViewById(R.id.textView1).setOnTouchListener(new MyTouchListener());
-		findViewById(R.id.textView2).setOnTouchListener(new MyTouchListener());
-		findViewById(R.id.textView3).setOnTouchListener(new MyTouchListener());
+		// findViewById(R.id.textView1).setOnTouchListener(new
+		// MyTouchListener());
+		// findViewById(R.id.textView2).setOnTouchListener(new
+		// MyTouchListener());
+		// findViewById(R.id.textView3).setOnTouchListener(new
+		// MyTouchListener());
+
 		// findViewById(R.id.myimage3).setOnTouchListener(new
 		// MyTouchListener());
 		// findViewById(R.id.myimage4).setOnTouchListener(new
@@ -57,24 +64,48 @@ public class DragActivity extends Activity {
 
 		upperLayout.setOnDragListener(new MyDragListener());
 		lowerLayout.setOnDragListener(new MyDragListener());
-		// findViewById(R.id.bottomleft).setOnDragListener(new
-		// MyDragListener());
-		// findViewById(R.id.bottomright).setOnDragListener(new
-		// MyDragListener());
 
 		// ---------
 
 		// snippet to jumble the arraylist.
-		ArrayList<String> x = new ArrayList<String>();
+		x = new ArrayList<String>();
 		x.add("one");
 		x.add("two");
 		x.add("three");
 		x.add("four");
 		Log.e("before JUMBLE", x.toString());
+		StringBuffer originalString = new StringBuffer();
+		int i = 0;
+		while (i < x.size()) {
+			originalString.append(x.get(i).toString().trim());
+			i++;
+		}
+		correctAns = originalString.toString();
 		Collections.shuffle(x);
 		Log.e("after JUMBLE", x.toString());
 
 		// ------
+
+		LayoutParams lparams = new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+		Log.e(" x  count", x.size() + "");
+		for (int j = 0; j < x.size(); j++) {
+			TextView tv = new TextView(this);
+			tv.setLayoutParams(lparams);
+			tv.setTextColor(Color.WHITE);
+			tv.setPadding(8, 8, 8, 8);
+			Log.e("string text ", x.get(j).toString().trim());
+			tv.setText(x.get(j).toString().trim());
+			tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 25);
+			tv.setOnTouchListener(new MyTouchListener());
+			upperLayout.addView(tv);
+		}
+
+		// findViewById(R.id.bottomleft).setOnDragListener(new
+		// MyDragListener());
+		// findViewById(R.id.bottomright).setOnDragListener(new
+		// MyDragListener());
+
 		str = new StringBuilder();
 		Button restart = (Button) findViewById(R.id.button1);
 		restart.setOnClickListener(new OnClickListener() {
@@ -158,7 +189,7 @@ public class DragActivity extends Activity {
 					String s = view3.getText().toString().trim();
 					Log.e("TEXT", view3.getText().toString().trim());
 					str.append(s);
-					if (numberOfViews == 3) {
+					if (numberOfViews == x.size()) {
 						if (str.toString().equals(correctAns)) {
 							Toast.makeText(getApplicationContext(), "Correct",
 									Toast.LENGTH_SHORT).show();
